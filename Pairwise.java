@@ -1,11 +1,12 @@
 import java.util.ArrayList;
-import java.lang.StringBuilder;
 
 public class Pairwise {
 
 	public static void main(String[] args){
 		try{
 			ArrayList<int[]> exhaustive = new ArrayList<int[]>();
+			ArrayList<int[]> interactions = new ArrayList<int[]>();
+			ArrayList<int[]> covering = new ArrayList<int[]>();
 			int numberOfArgs = args.length;
 
 			if (numberOfArgs < 2){
@@ -21,6 +22,8 @@ public class Pairwise {
 
 			System.out.println();
 			exhaustive = generateExhaustive(numberOfArgs);
+			interactions = generateInteractions(numberOfArgs);
+			//covering = generateCovering(exhuastive, interactions);
 			for(int i=0; i<exhaustive.size(); i++){
 				int[] tempArray = exhaustive.get(i);
 				for(int j=0; j<tempArray.length; j++){
@@ -69,5 +72,34 @@ public class Pairwise {
 
 			}
 		return returnArr;
+		}
+	
+	//generateCovering generates the covering array for a provided truth table
+		//parameters: ArrayList<int[]> truthT: a truth table for the number of arguements entered when running the program
+		//returns: ArrayList<int[]> where each element is an int array that represents a line of the covering array
+		public static ArrayList<int[]> generateCovering(ArrayList<int[]> truthT, ArrayList<int[]> interactions){
+			ArrayList<int[]> covering = new ArrayList<int[]>();
+			int[] rowsToKeep = new int[truthT.size()]; //max possible rows needed is the exhaustive array size
+			for(int i=0; i<rowsToKeep.length; i++){ //starts with no rows needed, all 0s. 0=not needed, 1=needed
+				rowsToKeep[i] = 0;
+			}
+			for(int i=0; i<truthT.size(); i++){
+				int[] currentRow = truthT.get(i);
+			}
+			return covering;
+		}
+		
+		//generateInteractions makes a list of all the pairwise interactions
+		//parameters: int num: number of argurments entered when running the program
+		//returns: ArrayList<int[]> where each element is an int array that represents a pairwise interaction
+		public static ArrayList<int[]> generateInteractions(int num){
+			ArrayList<int[]> theInteractions = new ArrayList<int[]>();
+			for(int i=0; i<num-1; i++){
+				for(int j=i+1; j<num; j++){
+					int[] row = {i,j};
+					theInteractions.add(row);
+				}
+			}
+			return theInteractions;
 		}
 }
