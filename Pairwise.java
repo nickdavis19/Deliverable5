@@ -60,10 +60,8 @@ public class Pairwise {
 			for(int j=num-1; j>=0; j--){
 				int tempInt = i/(int) Math.pow(2,j)%2;
 				tempArray[k] = tempInt;
-				System.out.println(tempInt);
 				k++;
 			}
-			System.out.println("her");
 			temp.add(tempArray);
 		}
 		return temp;
