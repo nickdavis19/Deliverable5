@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Pairwise {
 
 	public static void main(String[] args){
-		try{
+		// try{
 			ArrayList<int[]> exhaustive = new ArrayList<int[]>();
 			ArrayList<int[]> interactions = new ArrayList<int[]>();
 			ArrayList<int[]> covering = new ArrayList<int[]>();
@@ -24,17 +24,17 @@ public class Pairwise {
 			exhaustive = generateExhaustive(numberOfArgs);
 			interactions = generateInteractions(numberOfArgs);
 			covering = generateCovering(exhaustive, interactions);
-			for(int i=0; i<covering.size(); i++){
-				int[] tempArray = covering.get(i);
+			for(int i=0; i<exhaustive.size(); i++){
+				int[] tempArray = exhaustive.get(i);
 				for(int j=0; j<tempArray.length; j++){
 					System.out.print(tempArray[j] +"\t");
 				}
 				System.out.println();
 			}
-		}
-		catch(RuntimeException rte){
-			System.exit(-1);
-		}
+		// }
+		// catch(RuntimeException rte){
+		// 	System.exit(-1);
+		// }
 	}
 
 
@@ -73,7 +73,7 @@ public class Pairwise {
 			}
 		return returnArr;
 		}
-	
+
 	//generateCovering generates the covering array for a provided truth table
 		//parameters: ArrayList<int[]> truthT: a truth table for the number of arguements entered when running the program
 		//returns: ArrayList<int[]> where each element is an int array that represents a line of the covering array
@@ -87,28 +87,30 @@ public class Pairwise {
 			}
 			for(int i=0; i<interactions.size(); i++){ //current interaction we're dealing with
 				int[] currentInteraction = interactions.get(i);
-				System.out.println("Current Interaction: " + currentInteraction[0] + ", " + currentInteraction[1]);
-				for(int j=0; j<pairwiseTT.size(); j++){ //current row in the pairwiseTT we're trying to match
-					int[] tempPair = pairwiseTT.get(j);
-					System.out.println("CurrentRow of Pairwise: " + tempPair[0] + ", " + tempPair[1]);
-					for(int k=0; k<truthT.size(); k++){ //current row in the truth table we're dealing with
-						int[] tempArray = truthT.get(k);
-						System.out.println("CurrentRow of TT: " + tempArray[0] + ", " + tempArray[1]);
-						if(tempArray[currentInteraction[0]] == tempPair[currentInteraction[0]] && tempArray[currentInteraction[1]] == tempPair[currentInteraction[1]]){
+				// System.out.println("Current Interaction: " + currentInteraction[0] + ", " + currentInteraction[1]);
+
+				for(int k=0; k<truthT.size(); k++){ //current row in the truth table we're dealing with
+					int[] tempArray = truthT.get(k);
+					// System.out.println("CurrentRow of TT: " + tempArray[0] + ", " + tempArray[1]);
+
+					for(int j=0; j<pairwiseTT.size()-1; j++){ //current row in the pairwiseTT we're trying to match
+						int[] tempPair = pairwiseTT.get(j);
+
+						if(tempArray[currentInteraction[0]] == tempPair[0] && tempArray[currentInteraction[1]] == tempPair[1]
+						|| tempArray[currentInteraction[1]] == tempPair[0] && tempArray[currentInteraction[0]] == tempPair[1]){
 							if(covering.contains(tempArray)){
 								System.out.print("");
 							}else{
 								covering.add(k, tempArray);
-								System.out.println("Added: "+ tempArray[0] + ", " + tempArray[1]);
 							}
 						}
 					}
-					
+
 				}
 			}
 			return covering;
 		}
-		
+
 		//generateInteractions makes a list of all the pairwise interactions
 		//parameters: int num: number of argurments entered when running the program
 		//returns: ArrayList<int[]> where each element is an int array that represents a pairwise interaction
@@ -122,21 +124,27 @@ public class Pairwise {
 			}
 			return theInteractions;
 		}
-		
+
 		//generatePairwiseTT makes a standard pairwise TT to use
 		//parameters: none
 		//returns ArrayList<int[]> where each element is a row in a pairwise TT
 		public static ArrayList<int[]> generatePairwiseTT(){
 			ArrayList<int[]> pairwiseTT = new ArrayList<int[]>();
-			int[] pair = new int[2];
+			// int[] pair = new int[2];
 			for(int i=0; i<2; i++){
 				for(int j=0; j<2; j++){
+					int[] pair = new int[2];
+
 					pair[0] = i;
 					pair[1] = j;
+					// System.out.println("Pair:"+i+j);
 					pairwiseTT.add(pair);
 				}
 			}
-			
+			// System.out.println("sie"+pairwiseTT.size());
+			// for(int i =  0; i < 4;i++){
+			// 	System.out.println(pairwiseTT.get(i)[0]+", "+pairwiseTT.get(i)[1]);
+			// }
 			return pairwiseTT;
 		}
 }
