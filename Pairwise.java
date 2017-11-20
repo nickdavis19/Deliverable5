@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Pairwise {
 
 	public static void main(String[] args){
-		// try{
+		try{
 			ArrayList<int[]> exhaustive = new ArrayList<int[]>();
 			ArrayList<int[]> interactions = new ArrayList<int[]>();
 			ArrayList<int[]> covering = new ArrayList<int[]>();
@@ -16,25 +16,35 @@ public class Pairwise {
 
 			args = truncateParameters(args, numberOfArgs);
 
+			String dashes = "";
 			for(int i=0; i<numberOfArgs; i++){ //prints the names of the args
-				System.out.print(args[i] + "\t");
+				int numSpaces = 12 - args[i].length();
+				StringBuilder spaces = new StringBuilder();
+				for(int j=0; j < numSpaces; j++){
+					spaces = spaces.append(" ");
+				}
+				dashes = dashes + "-------------";
+				System.out.print(args[i] + spaces + "| ");
 			}
 
 			System.out.println();
+			System.out.print(dashes);
+			System.out.println();
+
 			exhaustive = generateExhaustive(numberOfArgs);
 			interactions = generateInteractions(numberOfArgs);
 			covering = generateCovering(exhaustive, interactions);
 			for(int i=0; i<exhaustive.size(); i++){
 				int[] tempArray = exhaustive.get(i);
 				for(int j=0; j<tempArray.length; j++){
-					System.out.print(tempArray[j] +"\t");
+					System.out.print(tempArray[j] +"           "+"| ");
 				}
 				System.out.println();
 			}
-		// }
-		// catch(RuntimeException rte){
-		// 	System.exit(-1);
-		// }
+		}
+		catch(RuntimeException rte){
+			System.exit(-1);
+		}
 	}
 
 
@@ -50,8 +60,10 @@ public class Pairwise {
 			for(int j=num-1; j>=0; j--){
 				int tempInt = i/(int) Math.pow(2,j)%2;
 				tempArray[k] = tempInt;
+				System.out.println(tempInt);
 				k++;
 			}
+			System.out.println("her");
 			temp.add(tempArray);
 		}
 		return temp;
@@ -87,11 +99,9 @@ public class Pairwise {
 			}
 			for(int i=0; i<interactions.size(); i++){ //current interaction we're dealing with
 				int[] currentInteraction = interactions.get(i);
-				// System.out.println("Current Interaction: " + currentInteraction[0] + ", " + currentInteraction[1]);
 
 				for(int k=0; k<truthT.size(); k++){ //current row in the truth table we're dealing with
 					int[] tempArray = truthT.get(k);
-					// System.out.println("CurrentRow of TT: " + tempArray[0] + ", " + tempArray[1]);
 
 					for(int j=0; j<pairwiseTT.size()-1; j++){ //current row in the pairwiseTT we're trying to match
 						int[] tempPair = pairwiseTT.get(j);
@@ -137,14 +147,10 @@ public class Pairwise {
 
 					pair[0] = i;
 					pair[1] = j;
-					// System.out.println("Pair:"+i+j);
 					pairwiseTT.add(pair);
 				}
 			}
-			// System.out.println("sie"+pairwiseTT.size());
-			// for(int i =  0; i < 4;i++){
-			// 	System.out.println(pairwiseTT.get(i)[0]+", "+pairwiseTT.get(i)[1]);
-			// }
+
 			return pairwiseTT;
 		}
 }
