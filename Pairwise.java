@@ -23,9 +23,9 @@ public class Pairwise {
 			System.out.println();
 			exhaustive = generateExhaustive(numberOfArgs);
 			interactions = generateInteractions(numberOfArgs);
-			//covering = generateCovering(exhuastive, interactions);
-			for(int i=0; i<exhaustive.size(); i++){
-				int[] tempArray = exhaustive.get(i);
+			covering = generateCovering(exhaustive, interactions);
+			for(int i=0; i<covering.size(); i++){
+				int[] tempArray = covering.get(i);
 				for(int j=0; j<tempArray.length; j++){
 					System.out.print(tempArray[j] +"\t");
 				}
@@ -79,12 +79,32 @@ public class Pairwise {
 		//returns: ArrayList<int[]> where each element is an int array that represents a line of the covering array
 		public static ArrayList<int[]> generateCovering(ArrayList<int[]> truthT, ArrayList<int[]> interactions){
 			ArrayList<int[]> covering = new ArrayList<int[]>();
+			ArrayList<int[]> pairwiseTT = new ArrayList<int[]>();
+			pairwiseTT = generatePairwiseTT();
 			int[] rowsToKeep = new int[truthT.size()]; //max possible rows needed is the exhaustive array size
 			for(int i=0; i<rowsToKeep.length; i++){ //starts with no rows needed, all 0s. 0=not needed, 1=needed
 				rowsToKeep[i] = 0;
 			}
-			for(int i=0; i<truthT.size(); i++){
-				int[] currentRow = truthT.get(i);
+			for(int i=0; i<interactions.size(); i++){ //current interaction we're dealing with
+				int[] currentInteraction = interactions.get(i);
+				System.out.println("Current Interaction: " + currentInteraction[0] + ", " + currentInteraction[1]);
+				for(int j=0; j<pairwiseTT.size(); j++){ //current row in the pairwiseTT we're trying to match
+					int[] tempPair = pairwiseTT.get(j);
+					System.out.println("CurrentRow of Pairwise: " + tempPair[0] + ", " + tempPair[1]);
+					for(int k=0; k<truthT.size(); k++){ //current row in the truth table we're dealing with
+						int[] tempArray = truthT.get(k);
+						System.out.println("CurrentRow of TT: " + tempArray[0] + ", " + tempArray[1]);
+						if(tempArray[currentInteraction[0]] == tempPair[currentInteraction[0]] && tempArray[currentInteraction[1]] == tempPair[currentInteraction[1]]){
+							if(covering.contains(tempArray)){
+								System.out.print("");
+							}else{
+								covering.add(k, tempArray);
+								System.out.println("Added: "+ tempArray[0] + ", " + tempArray[1]);
+							}
+						}
+					}
+					
+				}
 			}
 			return covering;
 		}
@@ -101,5 +121,22 @@ public class Pairwise {
 				}
 			}
 			return theInteractions;
+		}
+		
+		//generatePairwiseTT makes a standard pairwise TT to use
+		//parameters: none
+		//returns ArrayList<int[]> where each element is a row in a pairwise TT
+		public static ArrayList<int[]> generatePairwiseTT(){
+			ArrayList<int[]> pairwiseTT = new ArrayList<int[]>();
+			int[] pair = new int[2];
+			for(int i=0; i<2; i++){
+				for(int j=0; j<2; j++){
+					pair[0] = i;
+					pair[1] = j;
+					pairwiseTT.add(pair);
+				}
+			}
+			
+			return pairwiseTT;
 		}
 }
